@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace Explorer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 20px 0;
+        }
+
+        .form-container {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        .workspace-list {
+            list-style-type: none;
+            padding: 0;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .workspace-item {
+            padding: 15px;
+            border: 1px solid #007bff;
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .workspace-item:hover {
+            background-color: #e7f1ff;
+        }
+
+        .details {
+            display: none;
+            margin-top: 5px;
+            padding-left: 20px;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Workspace Explorer</h1>
+<div class="form-container">
+    <div class="form-group">
+        <input type="text" id="nameInput" placeholder="Enter your name" />
+        <button id="searchButton">Search Workspaces</button>
+    </div>
+</div>
+
+<h2>Your Workspaces</h2>
+<ul id="workspace-list"></ul>
+
+<script>
+    const workspaces = [
+        { name: "Alice's Workspace", details: "Details about Alice's workspace" },
+        { name: "Bob's Workspace", details: "Details about Bob's workspace" },
+        { name: "Alice's Project", details: "Details about Alice's project" },
+        { name: "Team Workspace", details: "Details about the team workspace" }
+    ];
+
+    document.getElementById('searchButton').addEventListener('click', () => {
+        const name = document.getElementById('nameInput').value;
+        displayWorkspaces(name);
+    });
+
+    function displayWorkspaces(name) {
+        const list = document.getElementById('workspace-list');
+        list.innerHTML = ''; // Clear previous content
+
+        const filteredWorkspaces = workspaces.filter(workspace => workspace.name.toLowerCase().includes(name.toLowerCase()));
+
+        if (filteredWorkspaces.length === 0) {
+            list.innerHTML = '<li>No workspaces found.</li>';
+            return;
+        }
+
+        filteredWorkspaces.forEach(workspace => {
+            const listItem = document.createElement('li');
+            listItem.className = 'workspace-item';
+            listItem.innerHTML = `
+                <strong>${workspace.name}</strong>
+                <div class="details">${workspace.details}</div>
+            `;
+            list.appendChild(listItem);
+        });
+    }
+</script>
+
+</body>
+</html>

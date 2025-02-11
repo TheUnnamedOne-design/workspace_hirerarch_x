@@ -3,194 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workspace Manager Dashboard</title>
+    <title>Employee Dashboard and Workspace Management</title>
     <style>
-        * {
+        body {
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --primary-color: #3498db;
-            --sidebar-width: 250px;
-        }
-
-        body {
-            background: #f0f2f5;
-            min-height: 100vh;
-        }
-
-        .navbar {
-            background: white;
-            padding: 1rem 2rem;
-            position: fixed;
-            width: calc(100% - var(--sidebar-width));
-            right: 0;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #e9ecef;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        h1 {
+            margin: 20px 0;
+            color: #343a40;
         }
 
-        .sidebar {
-            width: var(--sidebar-width);
-            background: white;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            box-shadow: 2px 0 4px rgba(0,0,0,0.1);
-            padding-top: 2rem;
-        }
-
-        .workspace-select {
+        .container {
             width: 80%;
-            margin: 0 auto 1rem auto;
-            display: block;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
+            max-width: 1200px;
+            margin: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .workspace-item, .activity-item {
+            cursor: pointer;
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #007bff;
+            background-color: #f8f9fa;
             border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
-        .nav-links {
-            list-style: none;
-            padding: 0 1rem;
+        .workspace-item:hover, .activity-item:hover {
+            background-color: #e7f1ff;
         }
 
-        .nav-links li a {
-            display: flex;
-            align-items: center;
-            padding: 1rem 2rem;
-            color: #2c3e50;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
+        .details {
+            display: none;
+            margin-top: 5px;
+            padding-left: 20px;
+            color: #495057;
         }
 
-        .main-content {
-            margin-left: var(--sidebar-width);
-            padding: 80px 2rem 2rem;
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
         }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+        .button:hover {
+            background-color: #0056b3;
         }
 
-        .dashboard-card {
-            background: white;
+        .form-container {
+            margin-top: 20px;
+            padding: 20px;
             border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .employee-section {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .form-group {
+            margin-bottom: 15px;
         }
 
-        .employee-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
+        .form-group label {
+            font-weight: bold;
         }
 
-        .employee-table th, .employee-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .employee-table th {
-            background-color: var(--primary-color);
-            color: white;
+        .form-group input,
+        .form-group select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="user-info">
-            <span class="notifications">🔔</span>
-            <span>Manager Dashboard</span>
-        </div>
-    </nav>
 
-    <aside class="sidebar">
-        <select class="workspace-select">
-            <option>Frontend Team</option>
-            <option>Backend Team</option>
-            <option>DevOps Team</option>
-            <option>Management</option>
-            <option>Client Relations</option>
-        </select>
-        <ul class="nav-links">
-            <li><a href="#" class="active">Teams</a></li>
-            <li><a href="#">Projects</a></li>
-            <li><a href="#">Tasks</a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Settings</a></li>
-        </ul>
-    </aside>
+<h1>Employee Dashboard and Workspace Management</h1>
+<div class="container">
+    <!-- Activity Creation Section -->
+    <div class="form-container">
+        <h2>Create New Activity</h2>
+        <form id="activityForm">
+            <div class="form-group">
+                <label for="activityName">Activity Name</label>
+                <input type="text" id="activityName" placeholder="Enter activity name" required>
+            </div>
+            <div class="form-group">
+                <label for="assignedTo">Assigned To</label>
+                <input type="text" id="assignedTo" placeholder="Enter assignee's name" required>
+            </div>
+            <div class="form-group">
+                <label for="deadline">Deadline</label>
+                <input type="date" id="deadline" required>
+            </div>
+            <div class="form-group">
+                <label for="resourcesAllocated">Resources Allocated</label>
+                <input type="text" id="resourcesAllocated" placeholder="Enter resources allocated" required>
+            </div>
+            <button type="submit" class="button">Add Activity</button>
+        </form>
+    </div>
 
-    <main class="main-content">
-        <div class="dashboard-grid">
-            <div class="dashboard-card">
-                <h3>Total Employees</h3>
-                <p style="font-size: 2rem; color: var(--primary-color);">120</p>
-            </div>
-            <div class="dashboard-card">
-                <h3>Active Projects</h3>
-                <p style="font-size: 2rem; color: var(--primary-color);">10</p>
-            </div>
-            <div class="dashboard-card">
-                <h3>Pending Tasks</h3>
-                <p style="font-size: 2rem; color: var(--primary-color);">25</p>
-            </div>
-        </div>
+    <h2>Activities</h2>
+    <ul id="activity-list"></ul>
 
-        <div class="employee-section">
-            <h3>Employee List</h3>
-            <table class="employee-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Task Assigned</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>John Doe</td>
-                        <td>Software Engineer</td>
-                        <td>Develop Login Page</td>
-                    </tr>
-                    <tr>
-                        <td>Jane Smith</td>
-                        <td>Project Manager</td>
-                        <td>Manage Sprint Planning</td>
-                    </tr>
-                    <tr>
-                        <td>Emily Davis</td>
-                        <td>UI/UX Designer</td>
-                        <td>Design Dashboard</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </main>
+    <div class="form-container">
+        <h2>Create Workspace</h2>
+        <form id="workspaceForm">
+            <div class="form-group">
+                <label for="workspaceName">Workspace Name</label>
+                <input type="text" id="workspaceName" placeholder="Enter workspace name" required>
+            </div>
+            <div class="form-group">
+                <label for="workspaceType">Workspace Type</label>
+                <select id="workspaceType" required>
+                    <option value="private">Private</option>
+                    <option value="public">Public</option>
+                    <option value="shared">Shared</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="parentWorkspace">Parent Workspace (optional)</label>
+                <select id="parentWorkspace">
+                    <option value="">None</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+            <button type="submit" class="button">Create Workspace</button>
+        </form>
+    </div>
+
+    <h2>Workspaces</h2>
+    <ul id="workspace-list"></ul>
+</div>
+
+<script>
+    let activities = []; // Array to hold activities
+    let workspaces = []; // Array to hold workspaces
+
+    // Display activities
+    function displayActivities() {
+        const list = document.getElementById('activity-list');
+        list.innerHTML = ''; // Clear previous content
+        activities.forEach((activity, index) => {
+            const listItem = document.createElement('li');
+            listItem.className = 'activity-item';
+            listItem.innerHTML = `
+                <strong>Name:</strong> ${activity.name}<br>
+                <strong>Assigned To:</strong> ${activity.assignedTo}<br>
+                <strong>Deadline:</strong> ${new Date(activity.deadline).toLocaleDateString()}<br>
+                <strong>Resources:</strong> ${activity.resources}
+                <div class="details" id="activity-details-${index}">
+                    <strong>Status:</strong> ${activity.status || 'Pending'}
+                </div>
+                <button class="button" onclick="toggleActivityDetails(${index})">Toggle Details</button>
+            `;
+            list.appendChild(listItem);
+        });
+    }
+
+    function toggleActivityDetails(index) {
+        const detailsDiv = document.getElementById(`activity-details-${index}`);
+        detailsDiv.style.display = detailsDiv.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Handle activity form submission
+    document.getElementById("activityForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const name = document.getElementById("activityName").value;
+        const assignedTo = document.getElementById("assignedTo").value;
+        const deadline = document.getElementById("deadline").value;
+        const resources = document.getElementById("resourcesAllocated").value;
+
+        activities.push({ name, assignedTo, deadline, resources });
+        displayActivities();
+        document.getElementById("activityForm").reset(); // Reset form fields
+    });
+
+    // Fetch and display workspaces
+    async function fetchWorkspaces() {
+        try {
+            const response = await fetch('http://localhost:3000/workspaces');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            workspaces = await response.json();
+            displayWorkspaces();
+            populateParentWorkspaces();
+        } catch (error) {
+            console.error('Error fetching workspaces:', error);
+        }
+    }
+
+    // Display workspaces
+    function displayWorkspaces() {
+        const list = document.getElementById('workspace-list');
+        list.innerHTML = ''; // Clear previous content
+
+        workspaces.forEach(workspace => {
+            const listItem = document.createElement('li');
+            listItem.className = 'workspace-item';
+            listItem.innerHTML = `
+                <strong>Name:</strong> ${workspace.name}<br>
+                <strong>Type:</strong> ${workspace.workspaceType}<br>
+                <strong>Created At:</strong> ${new Date(workspace.createdAt).toLocaleString()}
+                <div class="details" id="workspace-details-${workspace._id}">
+                    <strong>Workspace ID:</strong> ${workspace._id}<br>
+                    <strong>Encrypted Key:</strong> ${workspace.encrypted_key}<br>
+                    <button onclick="addChildWorkspace('${workspace._id}')">Add Child Workspace</button>
+                </div>
+            `;
+            listItem.onclick = () => {
+                const detailsDiv = document.getElementById(`workspace-details-${workspace._id}`);
+                detailsDiv.style.display = detailsDiv.style.display === "none" || detailsDiv.style.display === "" ? "block" : "none";
+            };
+            list.appendChild(listItem);
+        });
+    }
+
+    // Create workspace function
+    async function createWorkspace() {
+        const workspaceName = document.getElementById('workspaceName').value;
+        const workspaceType = document.getElementById('workspaceType').value;
+        const parentId = document.getElementById('parentWorkspace').value;
+
+        const data = {
+            name: workspaceName,
+            workspaceType: workspaceType,
+            encrypted_key: "initial_key", // Replace with actual encryption logic
+        };
+
+        if (parentId) {
+            data.parentId = parentId;
+        }
+
+        try {
+            const response = await fetch("http://localhost:3000/workspaces", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                alert("Workspace created successfully!");
+                fetchWorkspaces(); // Refresh the list
+                document.getElementById('workspaceForm').reset();
+            } else {
+                console.error("Failed to create workspace");
+                alert("Failed to create workspace");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred while creating the workspace");
+        }
+    }
+
+    // Add child workspace function
+    async function addChildWorkspace(parentId) {
+        const childName = prompt("Enter child workspace name:");
+        const childResources = prompt("Enter resources allocated to child:");
+
+        if (childName && childResources) {
+            const data = {
+                name: childName,
+                resources: childResources,
+            };
+
+            try {
+                const response = await fetch(`http://localhost:3000/workspaces/${parentId}/children`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                if (response.ok) {
+                    fetchWorkspaces(); // Refresh the list
+                } else {
+                    console.error('Failed to add child workspace');
+                }
+            } catch (error) {
+                console.error('Error adding child workspace:', error);
+            }
+        }
+    }
+
+    // Populate parent workspaces
+    function populateParentWorkspaces() {
+        const parentSelect = document.getElementById('parentWorkspace');
+        parentSelect.innerHTML = '<option value="">None</option>'; // Reset options
+
+        workspaces.forEach(workspace => {
+            const option = document.createElement('option');
+            option.value = workspace._id;
+            option.textContent = workspace.name;
+            parentSelect.appendChild(option);
+        });
+    }
+
+    // Handle workspace form submission
+    document.getElementById("workspaceForm").addEventListener("submit", async (event) => {
+        event.preventDefault(); // Prevent the default form submission
+        await createWorkspace(); // Call the function to create a workspace
+    });
+
+    // Initial fetch of workspaces
+    fetchWorkspaces();
+</script>
+
 </body>
 </html>

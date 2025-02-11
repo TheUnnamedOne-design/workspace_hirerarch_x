@@ -5,12 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Workspace</title>
 
-    <script>
-
-        var string='<select id="parent_wokspace">';
-            string+=''
-
-    </script>
+    
+    
 
     <style>
         /* General Styles */
@@ -108,10 +104,23 @@
                     <option value="public">Public</option>
                     <option value="shared">Shared</option>
                 </select>
-
-
-
             </div>
+
+
+            <div class="form-group">
+                <label for="workspace-list">Parent Workspace</label>
+                <select id="workspace-list" name="parentWorkspace">
+                    <option value="" disabled selected>Select Parent Workspace</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="workspace-list2">Child Workspace</label>
+                <select id="workspace-list2" name="ChildWorkspace">
+                    <option value="" disabled selected>Select Child Workspace</option>
+                </select>
+            </div>
+            
 
             <!-- Submit Button -->
             <button type="submit" class="submit-btn">Create Workspace</button>
@@ -121,43 +130,96 @@
     <script>
         // Handle form submission
         document.getElementById("workspaceForm").addEventListener("submit", async (event) => {
-            event.preventDefault(); // Prevent the default form submission
+    event.preventDefault(); // Prevent default form submission
 
-            // Get form data
-            const workspaceName = document.getElementById("workspaceName").value;
-            const workspaceType = document.getElementById("workspaceType").value;
+    // Get form data
+    const workspaceName = document.getElementById("workspaceName").value;
+    const workspaceType = document.getElementById("workspaceType").value;
+    const parentWorkspace = document.getElementById("workspace-list").value;
+    const childWorkspace = document.getElementById("workspace-list2").value;
 
-            // Prepare the data to send to the backend
-            const data = {
-                name: workspaceName,
-                encrypted_key: "initial_key", // Replace with actual encryption logic
-                id: `workspace_${Date.now()}`, // Generate a unique ID
-                idno: Math.floor(Math.random() * 1000), // Generate a random ID number
-            };
+    // Prepare data object to send
+    const data = {
+        name: workspaceName,
+        encrypted_key: "initial_key",
+        id: `workspace_${Date.now()}`, // Unique workspace ID
+        idno: Math.floor(Math.random() * 1000), // Random ID number
+        parent_workspaces: parentWorkspace ? [parentWorkspace] : [], // Include selected parent
+        child_workspaces: childWorkspace ? [childWorkspace] : [] // Include selected child
+    };
 
-            try {
-                // Send a POST request to the backend
-                const response = await fetch("http://localhost:3000/workspaces", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(data),
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log("Workspace created successfully:", result);
-                    alert("Workspace created successfully!");
-                } else {
-                    console.error("Failed to create workspace");
-                    alert("Failed to create workspace");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                alert("An error occurred while creating the workspace");
-            }
+    try {
+        // Send a POST request to the backend
+        const response = await fetch("http://localhost:3000/workspaces", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
         });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log("Workspace created successfully:", result);
+            alert("Workspace created successfully!");
+        } else {
+            console.error("Failed to create workspace");
+            alert("Failed to create workspace");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while creating the workspace");
+    }
+});
     </script>
+
+<script>
+    async function fetchWorkspaces() {
+        try {
+            const response = await fetch('http://localhost:3000/workspaces');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            displayWorkspaces(data, 'workspace-list', "Select Parent Workspace");
+            displayWorkspaces(data, 'workspace-list2', "Select Child Workspace");
+        } catch (error) {
+            console.error('Error fetching workspaces:', error);
+        }
+    }
+
+    function displayWorkspaces(workspaces, elementId, defaultText) {
+        const selectElement = document.getElementById(elementId);
+        if (!selectElement) {
+            console.error(`Element #${elementId} not found!`);
+            return;
+        }
+
+        selectElement.innerHTML = ""; // Clear existing options
+
+        // Add a default option
+        const defaultOption = document.createElement('option');
+        defaultOption.textContent = defaultText;
+        defaultOption.value = "";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        selectElement.appendChild(defaultOption);
+
+        workspaces.forEach(workspace => {
+            const option = document.createElement('option');
+            option.value = workspace.id; // Use workspace ID as the value
+            option.textContent = workspace.name; // Display workspace name
+            selectElement.appendChild(option);
+        });
+
+        console.log(`Workspaces loaded into #${elementId}:`, workspaces);
+    }
+
+    // Fetch workspaces when the page loads
+    document.addEventListener("DOMContentLoaded", fetchWorkspaces);
+</script>
+
+
+
 </body>
 </html>
