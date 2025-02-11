@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Workspace</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container for the Form */
+        .container {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Heading */
+        h1 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        /* Form Input Fields */
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #007bff;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Link to Other Pages */
+        .link {
+            margin-top: 1rem;
+            color: #555;
+        }
+
+        .link a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Workspace</h1>
+        <form id="workspaceForm">
+            <div class="form-group">
+                <label for="workspaceName">Workspace Name</label>
+                <input type="text" id="workspaceName" name="workspaceName" placeholder="Enter workspace name" required>
+            </div>
+            <div class="form-group">
+                <label for="workspaceDescription">Description</label>
+                <input type="text" id="workspaceDescription" name="workspaceDescription" placeholder="Enter a short description" required>
+            </div>
+            <div class="form-group">
+                <label for="workspaceBudget">Budget</label>
+                <input type="number" id="workspaceBudget" name="workspaceBudget" placeholder="Enter budget" required>
+            </div>
+            <button type="submit" class="submit-btn">Create Workspace</button>
+        </form>
+        <div class="link">
+            <p>Already have a workspace? <a href="#">Sign in</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('workspaceForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const workspaceName = document.getElementById('workspaceName').value;
+            const workspaceDescription = document.getElementById('workspaceDescription').value;
+            const workspaceBudget = document.getElementById('workspaceBudget').value;
+
+            const workspaceData = {
+                name: workspaceName,
+                description: workspaceDescription,
+                budget: workspaceBudget,
+            };
+
+            try {
+                const response = await fetch('/api/workspaces', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(workspaceData),
+                });
+
+                if (response.ok) {
+                    alert('Workspace created successfully!');
+                    window.location.href = '/workspaces'; // Redirect to workspaces page
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.message}`);
+                }
+            } catch (error) {
+                console.error('Error creating workspace:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

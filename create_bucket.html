@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Workspace</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Form Container */
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .form-container h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #2c3e50;
+        }
+
+        /* Form Input Fields */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #007bff;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Create Bucket</h1>
+        <form id="workspaceForm">
+            <!-- Workspace Name Input -->
+            <div class="form-group">
+                <label for="workspaceName">Bucket Name</label>
+                <input type="text" id="workspaceName" name="workspaceName" placeholder="Enter Bucket name" required>
+            </div>
+
+            <!-- Workspace Type Dropdown -->
+            <div class="form-group">
+                <label for="workspaceType">Bucket Type</label>
+                <select id="workspaceType" name="workspaceType" required>
+                    <option value="private">Private</option>
+                    <option value="public">Public</option>
+                    <option value="shared">Shared</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">Create BUtton</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("workspaceForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+    
+            const bucketName = document.getElementById("workspaceName").value;
+            const bucketType = document.getElementById("workspaceType").value;
+    
+            const sharedBucket = {
+                name: bucketName,
+                allowedWorkspaces: [], // Populate with workspace IDs
+                budget: 1000, // Example budget
+                resources: [], // Populate with resource IDs
+            };
+    
+            try {
+                const response = await fetch("http://localhost:3000/sharedbuckets", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(sharedBucket),
+                });
+    
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log("Shared Bucket created successfully:", result);
+                    alert("Shared Bucket created successfully!");
+                } else {
+                    console.error("Failed to create Shared Bucket");
+                    alert("Failed to create Shared Bucket");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while creating the Shared Bucket");
+            }
+        });
+    </script>
+    
+</body>
+</html>

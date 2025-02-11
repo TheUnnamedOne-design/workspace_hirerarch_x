@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace Manager</title>
+    <link rel="stylesheet" href="style_file_explore.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script> 
+</head>
+<body>
+
+    <h1>Workspace Manager</h1>
+
+    <label>Root Workspace Name:</label>
+    <input type="text" id="rootName" placeholder="Enter root workspace name">
+    <button onclick="setRootName()">Set Root Name</button>
+
+    <br><br>
+
+    <label>Workspace Name:</label>
+    <input type="text" id="workspaceName" placeholder="Enter workspace name">
+
+    <label>Type:</label>
+    <select id="workspaceType">
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+        <option value="shared">Shared</option>
+    </select>
+
+    <label>Parent Workspace:</label>
+    <select id="parentWorkspace">
+        <option value="">None (Root)</option>
+    </select>
+
+    <button onclick="createWorkspace()">Create Workspace</button>
+
+    <h2>Workspace Hierarchy</h2>
+    <div id="workspaceTree"></div>
+
+    <button onclick="saveWorkspaces()">Save Workspaces</button>
+    <button onclick="loadWorkspaces()">Load Workspaces</button>
+
+    <script src="access_tree.js"></script>
+    <script src="draw_tree.js"></script>
+
+</body>
+</html>

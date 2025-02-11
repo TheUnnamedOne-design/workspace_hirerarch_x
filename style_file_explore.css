@@ -1,0 +1,19 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.workspace {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.workspace:hover {
+    background-color: #f0f0f0;
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}

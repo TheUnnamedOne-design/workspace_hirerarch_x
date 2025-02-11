@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace Manager Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #3498db;
+            --sidebar-width: 250px;
+        }
+
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: calc(100% - var(--sidebar-width));
+            right: 0;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+            padding-top: 2rem;
+        }
+
+        .workspace-select {
+            width: 80%;
+            margin: 0 auto 1rem auto;
+            display: block;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .nav-links li a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            color: #2c3e50;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 80px 2rem 2rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .employee-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .employee-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .employee-table th, .employee-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .employee-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="user-info">
+            <span class="notifications">🔔</span>
+            <span>Manager Dashboard</span>
+        </div>
+    </nav>
+
+    <aside class="sidebar">
+        <select class="workspace-select">
+            <option>Frontend Team</option>
+            <option>Backend Team</option>
+            <option>DevOps Team</option>
+            <option>Management</option>
+            <option>Client Relations</option>
+        </select>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Teams</a></li>
+            <li><a href="#">Projects</a></li>
+            <li><a href="#">Tasks</a></li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Settings</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3>Total Employees</h3>
+                <p style="font-size: 2rem; color: var(--primary-color);">120</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Active Projects</h3>
+                <p style="font-size: 2rem; color: var(--primary-color);">10</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Pending Tasks</h3>
+                <p style="font-size: 2rem; color: var(--primary-color);">25</p>
+            </div>
+        </div>
+
+        <div class="employee-section">
+            <h3>Employee List</h3>
+            <table class="employee-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Task Assigned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>Software Engineer</td>
+                        <td>Develop Login Page</td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>Project Manager</td>
+                        <td>Manage Sprint Planning</td>
+                    </tr>
+                    <tr>
+                        <td>Emily Davis</td>
+                        <td>UI/UX Designer</td>
+                        <td>Design Dashboard</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

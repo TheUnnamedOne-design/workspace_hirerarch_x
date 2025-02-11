@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace</title>
+</head>
+<body>
+
+    <h1 id="workspaceTitle"></h1>
+    <p>Welcome to your workspace!</p>
+
+    <button onclick="goBack()">Back to Workspaces</button>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                id: params.get("id"),
+                name: params.get("name")
+            };
+        }
+
+        function goBack() {
+            window.location.href = "index.html";
+        }
+
+        const workspace = getQueryParams();
+        document.getElementById("workspaceTitle").innerText = workspace.name;
+    </script>
+
+</body>
+</html>

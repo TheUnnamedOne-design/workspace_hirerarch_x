@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspaces</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        ul { list-style-type: none; }
+        .workspace-item { cursor: pointer; margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; }
+        .details { display: none; margin-top: 5px; padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Workspaces</h1>
+<ul id="workspace-list"></ul>
+
+<script>
+    async function fetchWorkspaces() {
+        try {
+            const response = await fetch('http://localhost:3000/workspaces');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            displayWorkspaces(data);
+        } catch (error) {
+            console.error('Error fetching workspaces:', error);
+        }
+    }
+
+    function displayWorkspaces(workspaces) {
+        const list = document.getElementById('workspace-list');
+        workspaces.forEach(workspace => {
+            const listItem = document.createElement('li');
+            listItem.className = 'workspace-item';
+            listItem.innerHTML = `
+                <strong>Name:</strong> ${workspace.name}<br>
+                <strong>Created At:</strong> ${new Date(workspace.createdAt).toLocaleString()}
+                <div class="details" id="details-${workspace.id}">
+                    <strong>Workspace ID:</strong> ${workspace.id}<br>
+                    <strong>Encrypted Key:</strong> ${workspace.encrypted_key}<br>
+                    <!-- Additional info can go here -->
+                </div>
+            `;
+
+            // Add click event to toggle details
+            listItem.onclick = () => {
+                const detailsDiv = document.getElementById(`details-${workspace.id}`);
+                if (detailsDiv.style.display === "none" || detailsDiv.style.display === "") {
+                    detailsDiv.style.display = "block";
+                } else {
+                    detailsDiv.style.display = "none";
+                }
+            };
+
+            list.appendChild(listItem);
+        });
+    }
+
+    fetchWorkspaces();
+</script>
+
+</body>
+</html>
